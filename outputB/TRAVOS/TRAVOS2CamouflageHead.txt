@@ -1,0 +1,22 @@
+Attack: Camouflage Defense: TRAVOS
+
+=======================PERFORMANCE=========================
+target honest sales: 302
+target dishonest sales: 148
+target dishonest:honest sales: 148:302
+target dishonest-honest sales: -154
+
+======================PARAMETERS==========================
+NO_OF_DISHONEST_BUYERS             : 30
+NO_OF_HONEST_BUYERS                : 70
+NO_OF_DISHONEST_SELLERS            : 12
+NO_OF_HONEST_SELLERS               : 18
+NO_OF_DAYS                         : 10
+TARGET_DISHONEST_SELLER            : 0
+TARGET_HONEST_SELLER               : 29
+honestBuyerOntargetSellerRatio     : 0.5
+dishonestBuyerOntargetSellerRatio  : 0.5
+
+=======================DAILY INFO=========================
+sellers' sale
+==========================================================

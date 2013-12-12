@@ -1,0 +1,7 @@
+Sybil
+AlwaysUnfair
+Camouflage
+Whitewashing
+Sybil_Camouflage
+Sybil_Whitewashing
+..
