@@ -150,6 +150,9 @@ public class MainGUI extends JPanel {
 						if (s.equalsIgnoreCase(possibilities[0].toString())) { // For Simulated environment
 							new Simulated_Env("test");
 						}
+						if(s.equalsIgnoreCase(possibilities[1].toString())){
+							new Real_Env("test");
+						}
 					}
 					// Wenxu's input
 
