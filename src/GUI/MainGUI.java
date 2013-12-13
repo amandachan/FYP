@@ -2,6 +2,7 @@ package GUI;
 
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -12,33 +13,30 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 
 import main.CentralAuthority;
 import main.Parameter;
-//import environment.Simulated_Env;
-
-/*
- * DialogDemo.java requires these files:
- *   CustomDialog.java
- *   images/middle.gif
- */
-
 
 public class MainGUI extends JPanel {
 
 	public static ArrayList<String> selectedAttack = null;
 	public static ArrayList<String> selectedDetect = null;
 	public static String selectedEvaluate = null;
+	public static Simulated_Env se = null;
+	public static Real_Env re = null;
 	public JPanel panels[] = {new SimulationAnalyzer_Main(), new ChartAnalyzer_Main()};
 	//ArrayList<> newList;
 	JLabel label;
@@ -47,7 +45,6 @@ public class MainGUI extends JPanel {
 	DetectionListSelection LSD;
 	AttackListSelection ALS;
 
-	// Wenxu's input
 	// CustomDialog customDialog;
 	JOptionPane pane = new JOptionPane();
 	Reset reset = new Reset();
@@ -63,44 +60,23 @@ public class MainGUI extends JPanel {
 		// Create the components.
 		JPanel frequentPanel = createSimpleDialogBox();
 
-		label = new JLabel("Click the \"Show it!\" button"
-				+ " to bring up the selected dialog.", JLabel.CENTER);
 
-		// Lay them out.
 		Border padding = BorderFactory.createEmptyBorder(20, 20, 5, 20);
 		frequentPanel.setBorder(padding);
 
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("MainGUI", null, frequentPanel, simpleDialogDesc); // tooltip
-																				// text
+		// text
 
 		add(tabbedPane, BorderLayout.CENTER);
 
-		add(label, BorderLayout.PAGE_END);
+		//add(label, BorderLayout.PAGE_END);
 
-		label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	}
 
-	/** Sets the text displayed at the bottom of the frame. */
-	void setLabel(String newText) {
-		label.setText(newText);
-	}
 
 	/** Creates the panel shown by the first tab. */
 	private JPanel createSimpleDialogBox() {
-		final int numButtons = 4;
-		JRadioButton[] radioButtons = new JRadioButton[numButtons];
-		final ButtonGroup group = new ButtonGroup();
-		final ButtonGroup group2 = new ButtonGroup();
-
-		JButton[] buttonPanel = new JButton[3];
-
-		JButton showItButton = null;
-
-		final String pickEnvironmentCommand = "default";
-		final String pickAttackCommand = "yesno";
-		final String pickDetectionCommand = "yeahnah";
-		final String evaluate = "ync";
 
 		final JButton saveBtn;
 		final JButton runBtn;
@@ -112,132 +88,77 @@ public class MainGUI extends JPanel {
 		final String BTN_RUN = "Run";
 		final String BTN_RESET = "Reset";
 
-		radioButtons[0] = new JRadioButton("Environment");
-		radioButtons[0].setActionCommand(pickEnvironmentCommand);
+		JPanel envPanel = new JPanel(new FlowLayout());
+		JPanel attackPanel = new JPanel();
+		JPanel defensePanel = new JPanel();
+		JPanel matrixPanel = new JPanel(new BorderLayout());
+		JPanel runPanel = new JPanel();
 
-		radioButtons[1] = new JRadioButton("Attack Model");
-		radioButtons[1].setActionCommand(pickAttackCommand);
-
-		radioButtons[2] = new JRadioButton("Detection");
-		radioButtons[2].setActionCommand(pickDetectionCommand);
-
-		radioButtons[3] = new JRadioButton("Evaluation Metrics");
-		radioButtons[3].setActionCommand(evaluate);
-
-		for (int i = 0; i < numButtons; i++) {
-			group.add(radioButtons[i]);
-		}
-
-		radioButtons[0].setSelected(true);
-
-		showItButton = new JButton("Show it!");
-		showItButton.addActionListener(new ActionListener() {
-
+		JLabel envLabel = new JLabel("Select the desired environment: ");
+		final JList envList; 
+		DefaultListModel listModel;
+		listModel = new DefaultListModel();
+		listModel.addElement("Simulated Environment");
+		listModel.addElement("Real Environment");
+		envList = new JList(listModel);
+		envList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JButton envConfBtn = new JButton("Config");
+		envConfBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String command = group.getSelection().getActionCommand();
-
-				// ok dialog
-				if (command == pickEnvironmentCommand) {
-					Object[] possibilities = { "Simulated Environment", "Real Environment" };
-					String s = (String) JOptionPane.showInputDialog(frame,
-							"Select the desired environment:\n",
-							"Environment Selection Phase",
-							JOptionPane.PLAIN_MESSAGE, null, possibilities,
-							"Simulated Environment");// initial selection value
-
-					// Wenxu's input
-					if (s != null) { // Make sure the ok button is clicked
-						if (s.equalsIgnoreCase(possibilities[0].toString())) { // For Simulated environment
-							new Simulated_Env("test");
-						}
-						if(s.equalsIgnoreCase(possibilities[1].toString())){
-							new Real_Env("test");
-						}
+				try{
+					if (envList.getSelectedValue().toString().equalsIgnoreCase("Simulated Environment")){
+						se = new Simulated_Env("Simulate Environment");
 					}
-					// Wenxu's input
-
-					// yes/no dialog
-				} else if (command == pickAttackCommand) {
-					
-//					 DetectionModelsParameters DMP = new  DetectionModelsParameters();
-					try {
-						ALS = new AttackListSelection();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}	
-					ALS.initialise();
-					
-
-
-					// yes/no (not in those words)
-				} else if (command == pickDetectionCommand) {
-					
-				//	 DetectionModelsParameters DMP = new  DetectionModelsParameters();
-				LSD = new DetectionListSelection();	
-				LSD.initialise();
-				
-			
-					// BRS
-					// TRAVOS
-					// iCLUB
-					// Personalized
-					// WMA
-					/*
-					Object[] possibilities = { "brs", "travos", "iclub",
-							"personalized", "WMA" };
-					String t = (String) JOptionPane.showInputDialog(frame,
-							"Select the desired attack model:\n",
-							"Detection model Selection Phase",
-							JOptionPane.PLAIN_MESSAGE, icon, possibilities,
-							"brs");// initial selection value
-					selectedDetect = t;
-					
-					
-					if (t != null) { // Make sure the ok button is clicked
-						if (t.equals(possibilities[0])) { // BRS selected
-						
-							MasterConfigPanel MCP = new MasterConfigPanel();
-							
-														
-						} else { // for the stimulated environment
-
-							//Simulated_Env gui = new Simulated_Env("test", paramObj);
-
-						}
+					else if (envList.getSelectedValue().toString().equalsIgnoreCase("Real Environment")){
+						re = new Real_Env("Real Environment");
 					}
-					*/
-					
-
-					// yes/no/cancel (not in those words)
-				} else if (command == evaluate) {
-
-					Object[] possibilities = {
-							"Robustness [-1,1]",
-							"MAE-DS repDiff(Reputation difference of target dishonest seller ([0, 1])",
-							"MAE-HS repDiff(Reputation difference of target honest seller ([0, 1])",
-							"MCC-DS (Classification of target dishonest seller ([-1,1])",
-							"MCC-HS (Classification of target honest seller ([-1,1])"
-							};
-					String u = (String) JOptionPane.showInputDialog(frame,
-							"Select the desired evaluation metric:\n",
-							"Evaluation Metric Selection Phase",
-							JOptionPane.PLAIN_MESSAGE, null, possibilities,
-							"Robustness [-1,1]");// initial selection value
-					if (!u.isEmpty()){
-						Parameter.EVA_EMPTY = false;
-						selectedEvaluate = u;
-					}
-					
-
+				}catch (NullPointerException ex)
+				{
+					JOptionPane.showMessageDialog(null, "Please Config the environment.");
 				}
 			}
 		});
 
+		envPanel.add(envLabel);
+		envPanel.add(envList);
+		envPanel.add(envConfBtn);
+
+		JLabel matrixLabel = new JLabel("Select the evaluation matrix: ");
+		final JList matrixList; 
+		DefaultListModel matrixListModel;
+		matrixListModel = new DefaultListModel();
+		matrixListModel.addElement("Robustness [-1,1]");
+		matrixListModel.addElement("MAE-DS repDiff(Reputation difference of target dishonest seller ([0, 1])");
+		matrixListModel.addElement("MAE-HS repDiff(Reputation difference of target honest seller ([0, 1])");
+		matrixListModel.addElement("MCC-DS (Classification of target dishonest seller ([-1,1])");
+		matrixListModel.addElement("MCC-HS (Classification of target honest seller ([-1,1])");
+		matrixList = new JList(matrixListModel);
+		matrixList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JButton matrixOKBtn = new JButton("OK");
+		matrixOKBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					String u = matrixList.getSelectedValue().toString();
+					System.out.println("Evaluation matrix: "+u);
+					if (!u.isEmpty()){
+						Parameter.EVA_EMPTY = false;
+						selectedEvaluate = u;
+					}
+				}catch (NullPointerException ex)
+				{
+					JOptionPane.showMessageDialog(null, "Please select one evaluation matrix.");
+				}
+			}
+		});
+		matrixPanel.add(matrixLabel,BorderLayout.NORTH);
+		matrixPanel.add(matrixList,BorderLayout.CENTER);
+		matrixPanel.add(matrixOKBtn,BorderLayout.SOUTH);
+
+
+
 		runBtn = new JButton(BTN_RUN);
 		importBtn = new JButton(BTN_IMPORT);
 		resetBtn = new JButton(BTN_RESET);
-
 
 		runBtn.addActionListener(new ActionListener() {
 
@@ -268,21 +189,27 @@ public class MainGUI extends JPanel {
 					{
 						JOptionPane.showMessageDialog(null, "Please choose an evaluation metric from \"Evaluation Metric\"");
 					} else {
-					//	System.out.println("=====Come to MainGUI: ca.evaluateDefenses======");
-					//	System.out.println("selectedDetect "+selectedDetect.get(0));
-					//	System.out.println("selectedAttack "+selectedAttack.get(0));
-						ca.evaluateDefenses(selectedDetect, selectedAttack, selectedEvaluate);
+						//	System.out.println("=====Come to MainGUI: ca.evaluateDefenses======");
+						//	System.out.println("selectedDetect "+selectedDetect.get(0));
+						//	System.out.println("selectedAttack "+selectedAttack.get(0));
+						if (se != null){
+							ca.evaluateDefenses(selectedDetect, selectedAttack, selectedEvaluate, null);
+						}
+						else if (re !=null){
+							ca.evaluateDefenses(selectedDetect, selectedAttack, selectedEvaluate, re.getName());
+						}
 					}
-				} catch (ClassNotFoundException | NoSuchMethodException | SecurityException e1) {
+				} catch (ClassNotFoundException | NoSuchMethodException
+						| SecurityException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (Exception e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
-									
+
 				//Display display = new Display("Display");
-				
+
 			}
 		});
 
@@ -310,16 +237,40 @@ public class MainGUI extends JPanel {
 			}
 		});
 
-		buttonPanel[0] = importBtn;
-		buttonPanel[1] = runBtn;
-		buttonPanel[2] = resetBtn;
-		// still 4 buttons
-		for (int j = 0; j < 3; j++) {
-			group2.add(buttonPanel[j]);
-		}
+		runPanel.add(runBtn);
+		runPanel.add(importBtn);
+		runPanel.add(resetBtn);
 
-		return createPane(simpleDialogDesc + ":", radioButtons, showItButton,
-				buttonPanel);
+		try {
+			ALS = new AttackListSelection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}	
+		//JPanel attP = ALS.contentPane;
+		attackPanel = ALS.contentPane;   	
+
+		LSD = new DetectionListSelection();	
+		defensePanel = LSD.contentPane;
+
+		JPanel adPane = new JPanel(new FlowLayout());
+		adPane.add(attackPanel);
+		adPane.add(defensePanel);
+
+		JPanel topPane = new JPanel(new BorderLayout());
+		topPane.add(envPanel, BorderLayout.NORTH);
+		topPane.add(adPane, BorderLayout.SOUTH);
+
+		JPanel bottomPane = new JPanel(new BorderLayout());		
+
+		bottomPane.add(matrixPanel, BorderLayout.NORTH);
+		bottomPane.add(runPanel, BorderLayout.SOUTH);
+
+		JPanel contentPane = new JPanel(new BorderLayout());
+		contentPane.add(topPane, BorderLayout.PAGE_START);
+		contentPane.add(bottomPane, BorderLayout.PAGE_END);
+
+		return contentPane;
 	}
 
 	/* Open file chooser dialog and return the filename chosen */
@@ -333,42 +284,6 @@ public class MainGUI extends JPanel {
 
 	}
 
-	/**
-	 * Used by createSimpleDialogBox and createFeatureDialogBox to create a pane
-	 * containing a description, a single column of radio buttons, and the Show
-	 * it! button.
-	 */
-	private JPanel createPane(String description, JRadioButton[] radioButtons,
-			JButton showButton, JButton[] buttonPanel) {
-
-		int numChoices = radioButtons.length;
-		JPanel box = new JPanel();
-
-		JPanel box2 = new JPanel();
-
-		JLabel label = new JLabel(description);
-
-		box.setLayout(new BoxLayout(box, BoxLayout.PAGE_AXIS));
-		box.add(label);
-
-		for (int i = 0; i < numChoices; i++) {
-			box.add(radioButtons[i]);
-		}
-
-		box2.setLayout(new BoxLayout(box2, BoxLayout.X_AXIS));
-		box2.add(label);
-
-		for (int j = 0; j < 3; j++) {
-			box2.add(buttonPanel[j]);
-		}
-
-		JPanel pane = new JPanel(new BorderLayout());
-
-		pane.add(box, BorderLayout.PAGE_START);
-		pane.add(showButton, BorderLayout.EAST);
-		pane.add(box2, BorderLayout.SOUTH);
-		return pane;
-	}
 
 	/**
 	 * Create the GUI and show it. For thread safety, this method should be

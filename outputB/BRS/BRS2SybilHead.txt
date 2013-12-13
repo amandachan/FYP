@@ -1,10 +1,10 @@
 Attack: Sybil Defense: BRS
 
 =======================PERFORMANCE=========================
-target honest sales: 0
-target dishonest sales: 0
-target dishonest:honest sales: 0:0
-target dishonest-honest sales: 0
+target honest sales: 217
+target dishonest sales: 280
+target dishonest:honest sales: 280:217
+target dishonest-honest sales: 63
 
 ======================PARAMETERS==========================
 NO_OF_DISHONEST_BUYERS             : 70

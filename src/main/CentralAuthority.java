@@ -27,13 +27,14 @@ public class CentralAuthority {
 	ArrayList<Double> honest_avgWt;
 	ArrayList<Double> dishonest_avgWt;
 	ArrayList transList;
+	private String realdata_filename;
 
 	public static HashMap outputResult = new HashMap(); 
 	SimulationAnalyzer_Main analysis = new SimulationAnalyzer_Main();
 
 
 
-	public CentralAuthority(){          
+	public CentralAuthority(){   
 		honest_avgWt = new ArrayList();
 		dishonest_avgWt = new ArrayList();
 		env = new EnvironmentS();
@@ -65,9 +66,6 @@ public class CentralAuthority {
 		transList = new ArrayList();
 		m_buyers=env.getBuyerList();
 		m_sellers=env.getSellerList();
-		
-		
-		
 		
 		System.out.println(m_buyers.size());
 		for (int i=0; i<m_sellers.size(); i++){
@@ -114,19 +112,6 @@ public class CentralAuthority {
 					e.printStackTrace();
 				}
 			}
-			//			System.out.println("BEST BUYER IS: " + s + " banlance: " + bestBuyer);
-			//			System.out.println("MAE for day " + day + " is " + env.getDailyRepDiff().get(0) + " " + env.getDailyRepDiff().get(1));
-			//			System.out.println("MCC for day " + day + " is " + env.getMcc().getDailyMCC(day).get(0) + " " + env.getMcc().getDailyMCC(day).get(1));
-			//			System.out.println("FNR for day " + day + " is " + env.getMcc().getDailyFNR(day).get(0) + " " + env.getMcc().getDailyFNR(day).get(1));
-			//			System.out.println("FPR for day " + day + " is " + env.getMcc().getDailyFPR(day).get(0) + " " + env.getMcc().getDailyFPR(day).get(1));
-			//			System.out.println("TPR for day " + day + " is " + env.getMcc().getDailyTPR(day).get(0) + " " + env.getMcc().getDailyTPR(day).get(1));
-			//			System.out.println("Accuracy for day " + day + " is " + env.getMcc().getDailyAcc(day).get(0) + " " + env.getMcc().getDailyAcc(day).get(1));
-			//			System.out.println("Precision for day " + day + " is " + env.getMcc().getDailyPrec(day).get(0) + " " + env.getMcc().getDailyPrec(day).get(1));
-			//			System.out.println("F-Measure for day " + day + " is " + env.getMcc().getDailyF(day).get(0) + " " + env.getMcc().getDailyF(day).get(1));
-			//			System.out.println();
-			//for(int i=0; i<m_sellers.size(); i++){R
-			//System.out.println(i + " Pos: " + env.getPositiveRatings().get(m_sellers.get(i)) + " Neg: " + env.getNegativeRatings().get(m_sellers.get(i)));
-			//}
 			try {
 
 				String file1name = m_defenseName + m_attackName + noOfRuns + "MAE";
@@ -391,11 +376,16 @@ public class CentralAuthority {
 
 	}
 
-	public void evaluateDefenses(ArrayList<String> defenseNames, ArrayList<String> attackNames, String evaluateName) throws Exception,ClassNotFoundException, NoSuchMethodException, SecurityException{
+	public void evaluateDefenses(ArrayList<String> defenseNames, ArrayList<String> attackNames, String evaluateName, String realdata) throws Exception,ClassNotFoundException, NoSuchMethodException, SecurityException{
 		double averageMAEdh=0, averageMCCdh=0, averageFNRdh=0, averageFPRdh=0, averageTPRdh=0, averageAccdh=0, averagePrecdh = 0,averageFdh=0;
 		double averageMAEh=0, averageMCCh=0, averageFNRh=0, averageFPRh=0, averageTPRh=0, averageAcch=0, averagePrech =0, averageFh=0;
 		double averageRbosutness=0;
-
+		
+		// TO READ FILE FOR REAL ENVIRONMENT
+		if (realdata != null){
+			realdata_filename = realdata;
+		}
+		
 		int runtimes = Parameter.NO_OF_RUNTIMES;                    //runtimes =  50
 		transList = new ArrayList();
 		//output the result: [|transactions|, time]
@@ -816,6 +806,20 @@ public class CentralAuthority {
 	public void setEnv(Environment env) {
 		this.env = env;
 	}
+
+
+
+	public String getRealdata_filename() {
+		return realdata_filename;
+	}
+
+
+
+	public void setRealdata_filename(String realdata_filename) {
+		this.realdata_filename = realdata_filename;
+	}
+	
+	
 
 
 }

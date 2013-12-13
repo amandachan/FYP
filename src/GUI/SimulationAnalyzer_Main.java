@@ -257,6 +257,8 @@ public class SimulationAnalyzer_Main extends JPanel implements EventListener {
 			int sellerID = (int) inst.value(Parameter.m_sidIdx);
 			sellerRating[sellerID] += inst.value(Parameter.m_ratingIdx);
 			sellerRatingCount[sellerID]++;
+			//System.out.println("Debug: sellerRating of " +sellerID+"is "+sellerRating[sellerID]);
+			//System.out.println("Debug: sellerRatingCount:"+sellerRatingCount[sellerID]);
 		}
 		for (int f = 0; f<sellerRating.length; f++)
 		{

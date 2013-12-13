@@ -150,7 +150,7 @@ public class DetectionListSelection extends JFrame implements ActionListener {
         topHalf.setLayout(new BoxLayout(topHalf, BoxLayout.LINE_AXIS));
         JPanel listContainer = new JPanel(new GridLayout(1,1));
         listContainer.setBorder(BorderFactory.createTitledBorder(
-                                                "List"));
+                                                "Choose Defense List"));
         listContainer.add(listPane);
         
         topHalf.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));

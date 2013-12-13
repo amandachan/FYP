@@ -95,7 +95,7 @@ public class AttackListSelection extends JFrame implements ActionListener {
         topHalf.setLayout(new BoxLayout(topHalf, BoxLayout.LINE_AXIS));
         JPanel listContainer = new JPanel(new GridLayout(1,1));
         listContainer.setBorder(BorderFactory.createTitledBorder(
-                                                "List"));
+                                                "Choose Attack List"));
         listContainer.add(listPane);
         
         topHalf.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
@@ -116,6 +116,10 @@ public class AttackListSelection extends JFrame implements ActionListener {
         splitPane.add(bottomHalf);
             
     }
+    
+	public JPanel getPanel(){
+		return contentPane;
+	}
 
     /**
      * Create the GUI and show it.  For thread safety,
@@ -161,6 +165,7 @@ public class AttackListSelection extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		return selected;
 	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

@@ -15,7 +15,7 @@ public class Testbed {
                 def.add("BRS");
                 ArrayList<String> attack = new ArrayList();
                 attack.add("AlwaysUnfair");
-        c.evaluateDefenses(def, attack, "FYP");
+        c.evaluateDefenses(def, attack, "FYP", null);
         }
 
 }
