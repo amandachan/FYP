@@ -21,6 +21,7 @@ public class AlwaysUnfair extends Attack{
 
 	//randomly choose seller
 	public Seller chooseSeller(Buyer b){
+int hello;
 		int sellerid;
 		if(PseudoRandom.randDouble() < Parameter.m_dishonestBuyerOntargetSellerRatio){ 
 			sellerid = (PseudoRandom.randDouble() < 0.5)? Parameter.TARGET_DISHONEST_SELLER:Parameter.TARGET_HONEST_SELLER;
