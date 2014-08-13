@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class AttackListSelection extends JFrame implements ActionListener {
     JTextArea output;
-    JList list; 
+    JList list = null; 
     JTable table;
     static List selected;
     String newline = "\n";
